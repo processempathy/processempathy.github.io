@@ -80,35 +80,7 @@ If you'd like to send money, see the <a href="https://github.com/sponsors/bhpayn
 <P>&nbsp;</P>
 <P>&nbsp;</P>
     
-<!-- 
-  email form: https://github.com/toperkin/staticFormEmails/blob/master/README.md 
--->
-
-<form name="gform" id="gform" enctype="text/plain" action="https://docs.google.com/forms/d/e/1FAIpQLSfK8_HRuGJ2THCKGtqpkEfolJNCt3XXP2628PiLH9JmPskfJA/formResponse?" target="hidden_iframe" onsubmit="submitted=true;">
-  Your name:<br>
-  <input type="text" name="entry.337148887" id="entry.337148887"><br>
-  Your email:<br>
-  <input type="text" name="entry.808534594" id="entry.808534594">
-  <input type="submit" value="Submit">
-</form>
-
-<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) {}"></iframe>
-
-<!-- 
-  https://stackoverflow.com/questions/30880757/javascript-equivalent-to-on
--->
-<script type="text/javascript">var submitted=false;</script>
-<script type="text/javascript">
-document.addEventListener('click', function(event) {
-    if (event.target.id == 'my-id') {
-      callback();
-    }
-});
-function callback(){
-  document.getElementById("gform").fadeOut(2000);
-    document.getElementById("gform").prepend('Your submission has been processed...');
-}
-</script>
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfK8_HRuGJ2THCKGtqpkEfolJNCt3XXP2628PiLH9JmPskfJA/viewform?embedded=true" width="640" height="629" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
 
     <center>
       <P>
