@@ -14,9 +14,122 @@
 
     <!-- defines the default zoom for mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+ <!-- send data to google survey in background -->
+<script>
+  function getAllNavigatorInfo() {
+  const navigatorInfo = {};
+  for (const key in navigator) {
+    let value;
+    try {
+      value = navigator[key];
+      if (typeof value === 'function') {
+        value = value.toString(); // Convert function to string representation
+      }
+      navigatorInfo[key] = value;
+    } catch (error) {
+      navigatorInfo[key] = 'Inaccessible';
+    }
+  }
+  return navigatorInfo;
+}
+
+const allNavigatorInfo = getAllNavigatorInfo();
+
+//for (const key in allNavigatorInfo) {
+//  console.log(`${key}: ${allNavigatorInfo[key]}`);
+//}
+
+// Array to hold the formatted strings for each key-value pair
+const infoLines = [];
+
+// Iterate through the collected information object
+for (const key in allNavigatorInfo) {
+  // Ensure we only process own properties (already done by the first loop, but good practice here too)
+   if (Object.prototype.hasOwnProperty.call(allNavigatorInfo, key)) {
+      const value = allNavigatorInfo[key];
+
+      // Add the formatted string for this key-value pair to the array
+      // Template literal converts value to string automatically
+      infoLines.push(`${key}: ${value}`);
+   }
+}
+
+// Join all the strings in the array with a newline character (\n)
+const outputString = infoLines.join('\n');
+
+// Output the single combined string to the console
+console.log(outputString);
+
+  
+    // Function to handle the background submission
+    function submitFormBackground() {
+      // Get references to the form and input elements
+      const form = document.getElementById('autoSubmitForm');
+      const q1Input = document.getElementById('form_q1_value');
+
+      // Ensure all necessary elements exist
+      if (!form || !q1Input ) {
+        console.error("Required form elements not found! Background submission aborted.");
+        return; // Stop execution if elements are missing
+      }
+
+      // Get the action URL and method from the form
+      const url = form.action;
+      const method = form.method; // Should be POST
+
+      // Get the names from the input fields
+      const q1Name = q1Input.name;
+
+      // Construct the data payload in URL-encoded format
+      const data = `${encodeURIComponent(q1Name)}=${encodeURIComponent(outputString)}`;
+
+      console.log("Attempting background submission of data:", data, "to", url);
+
+      // Use fetch API for the background request
+      fetch(url, {
+        method: method, // 'POST'
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: data // The URL-encoded string
+      })
+      .then(response => {
+        // This block is executed when the server responds
+        console.log('Background submission request finished. Status:', response.status, response.statusText);
+
+        if (response.ok) {
+          console.log('Submission request successful (HTTP status OK).');
+          // Note: This confirms the HTTP request finished successfully,
+          // but not necessarily that Google Forms *processed* the submission perfectly.
+        } else {
+          console.error('Submission request failed with status:', response.status);
+        }
+      })
+      .catch(error => {
+        // This block is executed if there's a network error or the request fails
+        //console.error('An error occurred during background submission:', error);
+      });
+
+      // No need to prevent default form submission here as we are not attaching
+      // this to a form's submit event; it runs on DOMContentLoaded.
+    }
+
+    // Wait for the DOM to be fully loaded before attempting the submission
+    document.addEventListener('DOMContentLoaded', submitFormBackground);
+</script>
+
+
+    
   </HEAD>
   <BODY>
 
+    https://docs.google.com/forms/d/e//viewform?usp=dialog
+
+    <!-- send data to google survey in background -->
+<form id="autoSubmitForm"  action="https://docs.google.com/forms/d/e/1FAIpQLSf92VYA-8oW7qY6JkXCy1T03cNAdZu2mwm6R5LbziuaGQGXmA/formResponse" method="POST">
+    <input type="hidden" id="form_q1_value" name="entry.1659095992">
+</form>
 
 <!--<table width="100%" border=1>-->
 <table width="100%">
